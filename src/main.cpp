@@ -1,21 +1,19 @@
 #include "qsolver.h"
 
-static void scan_coef(EquationCoefficients *coefs);
-static void print_sol(num_roots count, EquationRoots roots);
-
-/* TODO: spaces + trailing whitespaces.  */
+void scan_coef(EquationCoefficients *coefs);
+void print_sol(Num_roots count, EquationRoots roots);
 
 int main()
 {
 	EquationCoefficients coefs;
 	EquationRoots roots;
 	scan_coef(&coefs);
-	print_sol(solve_equation(coefs, &roots), roots);
+	print_sol(solve_equation(&coefs, &roots), roots);
 
 	return 0;
 }
 
-static void scan_coef(EquationCoefficients *coefs)
+void scan_coef(EquationCoefficients *coefs)
 {
 	printf("Enter the coefficients 'a', 'b', 'c' of the quadratic equation a * x^2 + b * x + c = 0:\n");
 
@@ -27,7 +25,7 @@ static void scan_coef(EquationCoefficients *coefs)
 	}
 }
 
-static void print_sol(num_roots count, EquationRoots roots)
+void print_sol(Num_roots count, EquationRoots roots)
 {
 	switch (count){
 		case NO_ROOTS:

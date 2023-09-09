@@ -13,9 +13,12 @@ bool is_equal_double(double m, double n)
 
 bool check_equality(const double n, const double m)
 {
-	if (isnan(n) && isnan(m))
+	bool is_nan_n = isnan(n);
+	bool is_nan_m = isnan(m);
+
+	if (is_nan_n && is_nan_m)
 		return true;
-	if (isnan(n) || isnan(m))
+	if (is_nan_n || is_nan_m)
 		return false;
 
 	return is_zero(m - n);
@@ -40,7 +43,6 @@ void swap(double *m, double *n)
 	*n = temp;
 }
 
-//TODO: rename
 void sort_two_items(double *m, double *n)
 {
 	assert(m != NULL);

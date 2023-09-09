@@ -24,12 +24,13 @@ int test_solver()
 	int size = sizeof(tests) / sizeof(tests[0]);
 	int corr_test = 0;
 
-	for(int i = 0; i < size; i++){
+	for(int i = 0; i < size; ++i){
 		EquationRoots program_roots;
 
-		solve_equation(tests[i].coefs, &program_roots);
+		solve_equation(&tests[i].coefs, &program_roots);
 		
-		if (check_equality(program_roots.x1, tests[i].roots.x1) && check_equality(program_roots.x2, tests[i].roots.x2))
+		if (check_equality(program_roots.x1, tests[i].roots.x1) &&
+				check_equality(program_roots.x2, tests[i].roots.x2))
 			corr_test++;
 		else
 			report_failed_test(tests[i].roots, program_roots, i);
@@ -49,8 +50,9 @@ static void report_failed_test(EquationRoots expect, EquationRoots evaluate, int
 
 static void report_result_of_testing(int number)
 {
-	if (number)
-		printf(ANSI_COLOR_RED "Number of failed tests:" ANSI_COLOR_RESET " %3d\n", number);
-	else
-		printf(ANSI_COLOR_GREEN "All tests were successful\n" ANSI_COLOR_RESET);
+	if (number){
+		PRINT_COLORFUL_STRING("Number of failed tests:", ANSI_COLOR_RED);
+		printf("%3d\n", number);
+	}else
+		PRINT_COLORFUL_STRING("All tests were successful\n", ANSI_COLOR_GREEN);
 }

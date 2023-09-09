@@ -2,24 +2,24 @@
 
 // TODO: documentation using doxygen.
 
-void check_coefs(EquationCoefficients coefs)
+void check_coefs(EquationCoefficients *coefs)
 {
-	assert(isfinite(coefs.a) && "'a' is not finite");
-	assert(isfinite(coefs.b) && "'b' is not finite");
-	assert(isfinite(coefs.c) && "'c' is not finite");		
+	assert(isfinite(coefs->a) && "'a' is not finite");
+	assert(isfinite(coefs->b) && "'b' is not finite");
+	assert(isfinite(coefs->c) && "'c' is not finite");		
 }
 
-num_roots solve_equation(EquationCoefficients coefs, EquationRoots *roots)
+Num_roots solve_equation(EquationCoefficients *coefs, EquationRoots *roots)
 {	
 	check_coefs(coefs);
 
-	if (is_zero(coefs.a))
-		return solve_linear_eq(coefs.b, coefs.c, &roots->x1);
+	if (is_zero(coefs->a))
+		return solve_linear_eq(coefs->b, coefs->c, &roots->x1);
 
 	return solve_quadratic_eq(coefs, roots);
 }
 
-num_roots solve_linear_eq(const double b, const double c, double *x1)
+Num_roots solve_linear_eq(const double b, const double c, double *x1)
 {
 	if (is_zero(b)){
 		if (is_zero(c))
@@ -32,16 +32,23 @@ num_roots solve_linear_eq(const double b, const double c, double *x1)
 	return ONE;
 }
 
-num_roots solve_quadratic_eq(EquationCoefficients coefs, EquationRoots *roots)
+Num_roots solve_quadratic_eq(EquationCoefficients *coefs, EquationRoots *roots)
 {
-	double d = coefs.b * coefs.b - 4 * coefs.a * coefs.c;
+	check_coefs(coefs);
+
+	double d = coefs->b * coefs->b - 4 * coefs->a * coefs->c;
+	double twice_a = 2 * coefs->a;
 
 	if (is_zero(d)){
-		roots->x1 = fix_minus_zero(-coefs.b / (2 * coefs.a));
+		roots->x1 = fix_minus_zero(-coefs->b / twice_a);
 		return ONE;
+
 	}else if (d > 0){
-		roots->x1 = fix_minus_zero((-coefs.b - sqrt(d)) / (2 * coefs.a));
-		roots->x2 = fix_minus_zero((-coefs.b + sqrt(d)) / (2 * coefs.a));
+		double sqrt_d = sqrt(d);
+		
+		roots->x1 = fix_minus_zero((-coefs->b - sqrt_d) / twice_a);
+		roots->x2 = fix_minus_zero((-coefs->b + sqrt_d) / twice_a);
+		
 		sort_two_items(&roots->x1, &roots->x2);
 		return TWO;
 	}
